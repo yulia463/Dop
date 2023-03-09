@@ -1,258 +1,87 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import './App.css';
-import {TaskType, Todolist} from './Todolist';
-import {v1} from 'uuid';
+import {ShopList} from "./ShopList";
+import {FilterType, lidstpropsType, shoplistType, ThingsToBuyPropsType} from "./Typisation";
+import {v1} from "uuid";
 
-type ObjectType = {
-    title: string
-    filter: FilterValuesType
-    tasks: Array<TaskType>
-    students: Array<string>
-    todolistId:string
-}
-type TodoFromServesType = {
-    title: string
-    filter: FilterValuesType
-    tasks: Array<TaskType>
-    students: Array<string>
-}
- type TasksType = {
-    taskId: string
-    title: string
-    isDone: boolean
-
-}
-
-export type FilterValuesType = "all" | "active" | "completed";
 
 
 function App() {
-    // let todolistId1 = v1();
-    // let todolistId2 = v1();
-    //
-    // let [todolists, setTodolists] = useState<Array<TodolistType>>([
-    //     {id: todolistId1, title: "What to learn", filter: "all"},
-    //     {id: todolistId2, title: "What to buy", filter: "all"}
-    // ])
-    //
-    // let [tasks, setTasks] = useState<TasksStateType>({
-    //     [todolistId1]: [
-    //         {id: v1(), title: "HTML&CSS", isDone: true},
-    //         {id: v1(), title: "JS", isDone: true}
-    //     ],
-    //     [todolistId2]: [
-    //         {id: v1(), title: "Milk", isDone: true},
-    //         {id: v1(), title: "React Book", isDone: true}
-    //     ]
-    // });
 
-    const [todo, setTodo] = useState<Array<ObjectType>>([])
-    let todoFROMserver :TodoFromServesType[]= [
-        {
-            title: "What to learn",
-            filter: "all",
-            tasks: [
-                {taskId: v1(), title: "HTML&CSS", isDone: true},
-                {taskId: v1(), title: "JS", isDone: true}
-            ],
-            students: [
-                'Rick Kane',
-                'Finnlay Bentley',
-                'Samia North',
-                'Isaac Morton',
-                'Lily-Ann Clifford',
-                'Thalia Park',
-                'Sapphire Cruz',
-                'Cieran Vazquez',
-                'Anya Estes',
-                'Dominika Field',
-                'Rosanna Chung',
-                'Safiyah Davey',
-                'Ryley Beasley',
-                'Kalvin Trejo',
-                'Evie-Mae Farrell',
-                'Juliet Valencia',
-                'Astrid Austin',
-                'Lyle Montgomery',
-                'Nisha Mora',
-                'Kylie Callaghan',
-                'Star Wilks',
-                'Marissa Colley',
-                'Asa Fuller',
-                'Leigh Kemp',
-                'Avleen Dawson',
-                'Sammy Bonilla',
-                'Acacia Becker',
-                'Coral Shepherd',
-                'Melina Molina',
-                'Kiran Bailey',
-                'Clara Escobar',
-                'Alexandru Horn',
-                'Brandon-Lee Mercado',
-                'Elouise Weston',
-                'King Long',
-                'Kerri Searle',
-                'Kanye Hamer',
-                'Elwood Benitez',
-                'Mikail Whitaker',
-                'Bobby Hardy',
-                'Talha Ferry',
-                'Priscilla Landry',
-                'Olivia-Grace Cain',
-                'Kiaan Wallace',
-                'Wesley Padilla90',
-                'Ella-Grace Wooten91',
-                'Kaif Molloy92',
-                'Kamal Broadhurst93',
-                'Bianca Ferrell94',
-                'Micheal Talbot95',
-            ]
-        },
-        {
-            title: "What to do",
-            filter: "all",
-            tasks: [
-                {taskId: v1(), title: "HTML&CSS2", isDone: true},
-                {taskId: v1(), title: "JS2", isDone: true}
-            ],
-            students: [
-                'Jago Wormald1',
-                'Saul Milne2',
-                'Aariz Hester3',
-                'Dion Reeve4',
-                'Anisa Ortega5',
-                'Blade Cisneros6',
-                'Malaikah Phelps7',
-                'Zeeshan Gallagher8',
-                'Isobella Vo9',
-                'Rizwan Mathis10',
-                'Menaal Leach11',
-                'Kian Walton12',
-                'Orion Lamb13',
-                'Faizah Huynh14',
-                'Crystal Vaughan15',
-                'Vivien Hickman16',
-                'Stuart Lu17',
-                'Karol Davison18',
-                'Dario Burns19',
-                'Chloe Rich20',
-                'Martyna Felix',
-                'Nida Glass',
-                'Maeve Miles',
-                'Hasnain Puckett',
-                'Ayman Cano',
-                'Safwan Perry',
-                'Fox Kelly',
-                'Louise Barlow',
-                'Malaki Mcgill',
-                'Leanna Cline',
-                'Willard Hodge',
-                'Amelia Dorsey',
-                'Kiah Porter',
-                'Jeanne Daly',
-                'Mohsin Armstrong',
-                'Laurie Rangel',
-                'Princess Tierney',
-                'Kasim Kendall',
-                'Darryl Cope',
-                'Elysha Ray',
-                'Liyana Harris',
-                'Kashif Blackburn',
-                'Atif Zimmerman',
-                'Sila Hartley',
-                'Ralphie Hebert',
-            ]
-        }
-    ];
+    let shoplistID_1 = v1();
+    let shoplistID_2 = v1()
 
-    useEffect(() => {
-     setTodo(todoFROMserver.map(el=>({...el,todolistId:v1()})))
-    }, [])
+    const [shopList, setShopList]=useState<Array<lidstpropsType>>([
+        {id: shoplistID_1, title: "Что купить папе", filter: "all"},
+        {id: shoplistID_2, title: "Что купить котопсу", filter: "all"},
 
-    function removeTask(taskId: string, todolistIdCurren: string) {
-        // //достанем нужный массив по todolistId:
-        setTodo(todo.map(el=>el.todolistId ===todolistIdCurren
-            ? {...el,tasks: el.tasks.filter(fl=>fl.taskId !== taskId)}
-            : el))
-        // // перезапишем в этом объекте массив для нужного тудулиста отфилтрованным массивом:
+    ])
 
-        // // засетаем в стейт копию объекта, чтобы React отреагировал перерисовкой
+    const [thingsToBuy, setThingsToBuy] = useState<shoplistType>({
+
+        [shoplistID_1]:[
+            {id: v1(), title: 'Milk', expectedPrice: '$1.99', realPrice: '$1.99', inCart: true},
+            {id: v1(), title: 'Bread', expectedPrice: '$0.99', realPrice: '$0.89', inCart: true},
+            {id: v1(), title: 'Coca-Cola', expectedPrice: '$1.49', realPrice: '$1.49', inCart: true},
+            {id: v1(), title: 'Eggs', expectedPrice: '$2.49', realPrice: '$3.99', inCart: false},
+            {id: v1(), title: 'Cakes', expectedPrice: '$4.99', realPrice: '$6.99', inCart: false},
+        ],
+        [shoplistID_2]: [
+            {id: v1(), title: 'Витамины', expectedPrice: '$0.99', realPrice: '$0.89', inCart: true},
+            {id: v1(), title: 'Корм', expectedPrice: '$1.49', realPrice: '$1.49', inCart: true},
+            {id: v1(), title: 'Игрушка', expectedPrice: '$2.49', realPrice: '$3.99', inCart: false},
+        ]
+    })
+
+    const deleteItemShop = (id:string) => {
+        // let things = thingsToBuy.filter(th => th.id !== id)
+        // setThingsToBuy(things)
+        console.log(parseFloat('12.5$'))
+    }
+    // let thingsToShopList = filter === "buy"
+    //     ? thingsToBuy.filter(el=>el.inCart === true)
+    //     : filter === "not buy"
+    //         ? thingsToBuy.filter(el=>el.inCart === false)
+    //         : thingsToBuy
+
+    const changeFilter = (newFilterValue:FilterType)=>{
+        // setFilter(newFilterValue)
+    }
+    const addtask =(newTitle:string)=>{
+        // const newTavar={id: v1(), title: newTitle, expectedPrice: '$4.99', realPrice: '$6.99', inCart: false}
+        // setThingsToBuy([newTavar,...thingsToBuy])
     }
 
-    function addTask(title: string, todolistIdCurren: string) {
-        let newTask= {taskId: v1(), title: title, isDone: false};
-        setTodo(todo.map(el=>el.todolistId === todolistIdCurren
-        ?{...el,tasks: [...el.tasks,newTask]}
-        :el
-        ))
-        // let task = {id: v1(), title: title, isDone: false};
-        // //достанем нужный массив по todolistId:
-        // let todolistTasks = tasks[todolistId];
-        // // перезапишем в этом объекте массив для нужного тудулиста копией, добавив в начало новую таску:
-        // tasks[todolistId] = [task, ...todolistTasks];
-        // // засетаем в стейт копию объекта, чтобы React отреагировал перерисовкой
-        // setTasks({...tasks});
-    }
-
-    function changeStatus(id: string, isDone: boolean, todolistIdCurrent: string) {
-        setTodo(todo.map(el => el.todolistId === todolistIdCurrent
-            ? {...el, tasks: el.tasks.map(t => t.taskId === id ? {...t, isDone} : t)}
-            : el
-        ))
-    }
-
-    function changeFilter(value: FilterValuesType, todolistIdCurren: string) {
-        setTodo(todo.map(el=>el.todolistId === todolistIdCurren
-            ? {...el,filter:value}
-            :el))
-        // let todolist = todolists.find(tl => tl.id === todolistId);
-        // if (todolist) {
-        //     todolist.filter = value;
-        //     setTodolists([...todolists])
-        // }
-    }
-
-    function removeTodolist(todolistIdCurren: string) {
-        setTodo(todo.filter(el=>el.todolistId !== todolistIdCurren))
-        // // засунем в стейт список тудулистов, id которых не равны тому, который нужно выкинуть
-        // setTodolists(todolists.filter(tl => tl.id != id));
-        // // удалим таски для этого тудулиста из второго стейта, где мы храним отдельно таски
-        // delete tasks[id]; // удаляем св-во из объекта... значением которого являлся массив тасок
-        // // засетаем в стейт копию объекта, чтобы React отреагировал перерисовкой
-        // setTasks({...tasks});
+    const changeCartStatus = (itemID: string, checked: boolean) => {
+        // setThingsToBuy(thingsToBuy.map( el => el.id === itemID ? {...el, inCart: checked} : el ))
     }
 
     return (
         <div className="App">
-            {
-                todo.map((tl) => {
-                    let allTodolistTasks = tl.tasks;
-                    let tasksForTodolist = allTodolistTasks;
 
-                    if (tl.filter === "active") {
-                        tasksForTodolist = allTodolistTasks.filter(t => t.isDone === false);
-                    }
-                    if (tl.filter === "completed") {
-                        tasksForTodolist = allTodolistTasks.filter(t => t.isDone === true);
-                    }
-
-                    return <Todolist
-                        key={tl.todolistId}
-                        id={tl.todolistId}
-                        title={tl.title}
-                        tasks={tasksForTodolist}
-                        removeTask={removeTask}
+            { shopList.map(el=>{
+               let thingsToShopList = thingsToBuy[el.id]
+                   thingsToShopList = el.filter === "buy"
+                   ? thingsToBuy[el.id].filter(el=>el.inCart === true)
+                   : el.filter === "not buy"
+                       ? thingsToBuy[el.id].filter(el=>el.inCart === false)
+                       : thingsToBuy[el.id]
+                return (
+                    <ShopList
+                        key={el.id}
+                        shopId={el.id}
+                        title = {el.title}
+                        whatToBuy = {thingsToShopList}
+                        deleteItemShop = {deleteItemShop}
                         changeFilter={changeFilter}
-                        addTask={addTask}
-                        changeTaskStatus={changeStatus}
-                        filter={tl.filter}
-                        removeTodolist={removeTodolist}
+                        addtask={addtask}
+                        changeCheckBox={changeCartStatus}
+                        filterValue={el.filter}
                     />
-                })
-            }
+                )
+            })}
 
         </div>
     );
 }
-
 export default App;
