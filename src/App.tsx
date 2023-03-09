@@ -5,13 +5,13 @@ import {FilterType, lidstpropsType, shoplistType, ThingsToBuyPropsType} from "./
 import {v1} from "uuid";
 
 
-
 function App() {
 
     let shoplistID_1 = v1();
     let shoplistID_2 = v1()
 
-    const [shopList, setShopList]=useState<Array<lidstpropsType>>([
+
+    const [shopList, setShopList] = useState<Array<lidstpropsType>>([
         {id: shoplistID_1, title: "Что купить папе", filter: "all"},
         {id: shoplistID_2, title: "Что купить котопсу", filter: "all"},
 
@@ -19,7 +19,7 @@ function App() {
 
     const [thingsToBuy, setThingsToBuy] = useState<shoplistType>({
 
-        [shoplistID_1]:[
+        [shoplistID_1]: [
             {id: v1(), title: 'Milk', expectedPrice: '$1.99', realPrice: '$1.99', inCart: true},
             {id: v1(), title: 'Bread', expectedPrice: '$0.99', realPrice: '$0.89', inCart: true},
             {id: v1(), title: 'Coca-Cola', expectedPrice: '$1.49', realPrice: '$1.49', inCart: true},
@@ -33,46 +33,46 @@ function App() {
         ]
     })
 
-    const deleteItemShop = (id:string) => {
-        // let things = thingsToBuy.filter(th => th.id !== id)
-        // setThingsToBuy(things)
-        console.log(parseFloat('12.5$'))
+    const deleteItemShop = (shoplistId: string, itemId: string) => {
+        setThingsToBuy({...thingsToBuy, [shoplistId]: thingsToBuy[shoplistId].filter(el => el.id !== itemId)})
     }
-    // let thingsToShopList = filter === "buy"
-    //     ? thingsToBuy.filter(el=>el.inCart === true)
-    //     : filter === "not buy"
-    //         ? thingsToBuy.filter(el=>el.inCart === false)
-    //         : thingsToBuy
-
-    const changeFilter = (newFilterValue:FilterType)=>{
-        // setFilter(newFilterValue)
+    const changeFilter = (shoplistId: string, newFilterValue: FilterType) => {
+        setShopList(shopList.map(el => el.id === shoplistId
+            ? {...el, filter: newFilterValue}
+            : el
+        ))
     }
-    const addtask =(newTitle:string)=>{
-        // const newTavar={id: v1(), title: newTitle, expectedPrice: '$4.99', realPrice: '$6.99', inCart: false}
-        // setThingsToBuy([newTavar,...thingsToBuy])
+    const addtask = (shoplistId: string, newTitle: string) => {
+        let newTavar = {id: v1(), title: newTitle, expectedPrice: '$2.49', realPrice: '$6.99', inCart: false};
+        setThingsToBuy({...thingsToBuy, [shoplistId]: [...thingsToBuy[shoplistId], newTavar]})
     }
 
-    const changeCartStatus = (itemID: string, checked: boolean) => {
-        // setThingsToBuy(thingsToBuy.map( el => el.id === itemID ? {...el, inCart: checked} : el ))
+    const changeCartStatus = (shoplistId: string, itemID: string, checked: boolean) => {
+        setThingsToBuy({
+            ...thingsToBuy, [shoplistId]: thingsToBuy[shoplistId].map(el => el.id === itemID
+                ? {...el, inCart: checked}
+                : el
+            )
+        })
     }
 
     return (
         <div className="App">
 
-            { shopList.map(el=>{
-               let thingsToShopList = thingsToBuy[el.id]
-                   thingsToShopList = el.filter === "buy"
-                   ? thingsToBuy[el.id].filter(el=>el.inCart === true)
-                   : el.filter === "not buy"
-                       ? thingsToBuy[el.id].filter(el=>el.inCart === false)
-                       : thingsToBuy[el.id]
+            {shopList.map(el => {
+                let thingsToShopList = thingsToBuy[el.id]
+                thingsToShopList = el.filter === "buy"
+                    ? thingsToBuy[el.id].filter(el => el.inCart === true)
+                    : el.filter === "not buy"
+                        ? thingsToBuy[el.id].filter(el => el.inCart === false)
+                        : thingsToBuy[el.id]
                 return (
                     <ShopList
                         key={el.id}
                         shopId={el.id}
-                        title = {el.title}
-                        whatToBuy = {thingsToShopList}
-                        deleteItemShop = {deleteItemShop}
+                        title={el.title}
+                        whatToBuy={thingsToShopList}
+                        deleteItemShop={deleteItemShop}
                         changeFilter={changeFilter}
                         addtask={addtask}
                         changeCheckBox={changeCartStatus}
@@ -84,4 +84,5 @@ function App() {
         </div>
     );
 }
+
 export default App;

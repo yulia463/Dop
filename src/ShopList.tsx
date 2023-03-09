@@ -7,7 +7,7 @@ export const ShopList = (props: ShopListPropsType) => {
     const [error, setError] = useState<'Ошибка, введите имя товара!' | ''>('');
 
     const onclickHandler = (value: FilterType) => {
-        props.changeFilter(value)
+        props.changeFilter(props.shopId,value)
     }
 
     const [inputValue, setInputValue] = useState('')
@@ -18,7 +18,7 @@ export const ShopList = (props: ShopListPropsType) => {
     const onClickHandler = () => {
         const trimmedValue = inputValue.trim()
         if (trimmedValue !== '') {
-            props.addtask(inputValue)
+            props.addtask(props.shopId,inputValue)
             setInputValue('')
         } else {
             setError('Ошибка, введите имя товара!');
@@ -30,7 +30,7 @@ export const ShopList = (props: ShopListPropsType) => {
         const trimmedValue = inputValue.trim()
         if (event.key === 'Enter')
             if (trimmedValue !== '') {
-                props.addtask(inputValue)
+                props.addtask(props.shopId,inputValue)
                 setInputValue('')
             } else {
                 setError('Ошибка, введите имя товара!')
@@ -52,7 +52,7 @@ export const ShopList = (props: ShopListPropsType) => {
                 {props.whatToBuy.map((item) => {
 
                         const onChangeCheckBoxHandler = (e: ChangeEvent<HTMLInputElement>) => {
-                            props.changeCheckBox(item.id, e.currentTarget.checked)
+                            props.changeCheckBox(props.shopId,item.id, e.currentTarget.checked)
                         }
 
                         const ex = Number(item.expectedPrice.replace(/[$]/g, ''));
@@ -63,8 +63,7 @@ export const ShopList = (props: ShopListPropsType) => {
                             <li key={item.id} className={item.inCart ? s.shopList : ''}>
                                 <div><b>{item.title}</b>
                                     <button onClick={() => {
-                                        props.deleteItemShop(item.id)
-                                    }}> -x-
+                                        props.deleteItemShop(props.shopId,item.id)}}> -x-
                                     </button>
                                 </div>
                                 <div className={colorPrice}>{'expected price: ' + item.expectedPrice}</div>
