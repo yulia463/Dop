@@ -34,26 +34,26 @@ function App() {
     })
 
     const deleteItemShop = (shoplistId: string, itemId: string) => {
-        setThingsToBuy({...thingsToBuy, [shoplistId]: thingsToBuy[shoplistId].filter(el => el.id !== itemId)})
+        setThingsToBuy({...thingsToBuy,[shoplistId]:thingsToBuy[shoplistId].filter(el=>el.id !== itemId)})
     }
+
     const changeFilter = (shoplistId: string, newFilterValue: FilterType) => {
-        setShopList(shopList.map(el => el.id === shoplistId
-            ? {...el, filter: newFilterValue}
-            : el
-        ))
+       setShopList(shopList.map(el=>el.id === shoplistId
+           ? {...el,filter: newFilterValue}
+           :el
+       ))
     }
+
     const addtask = (shoplistId: string, newTitle: string) => {
         let newTavar = {id: v1(), title: newTitle, expectedPrice: '$2.49', realPrice: '$6.99', inCart: false};
-        setThingsToBuy({...thingsToBuy, [shoplistId]: [...thingsToBuy[shoplistId], newTavar]})
+        setThingsToBuy({...thingsToBuy,[shoplistId]:[...thingsToBuy[shoplistId],newTavar]})
     }
 
     const changeCartStatus = (shoplistId: string, itemID: string, checked: boolean) => {
-        setThingsToBuy({
-            ...thingsToBuy, [shoplistId]: thingsToBuy[shoplistId].map(el => el.id === itemID
-                ? {...el, inCart: checked}
-                : el
-            )
-        })
+        setThingsToBuy({...thingsToBuy,[shoplistId]:thingsToBuy[shoplistId].map(el=>el.id ===itemID
+            ?{...el,inCart:checked}
+            :el
+            )})
     }
 
     return (
